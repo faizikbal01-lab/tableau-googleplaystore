@@ -129,6 +129,87 @@ git clone https://github.com/your-username/Google-PlayStore-Tableau-Analysis.git
 The **Google Play Store** dataset is a publicly available dataset commonly sourced from [Kaggle](https://www.kaggle.com/datasets/lava18/google-play-store-apps). It represents a snapshot of app metadata scraped from the Play Store and is intended for educational and analytical purposes only.
 
 ---
+## Recommendations for GitHub Upload
+
+Before publishing this project to GitHub, the following improvements are recommended to maximise usability, reproducibility, and professional quality.
+
+### 1. File Naming & Repository Hygiene
+
+- **Rename `Untitled_Report.pdf`:** This is the most visible file in the repo and its current name signals an unfinished project to any visitor. Rename it to something descriptive before upload — e.g. `google_playstore_dashboard_report.pdf`. This single change has an outsized impact on first impressions.
+- **Rename `Book1.twb`:** Tableau's default workbook name carries the same problem. Rename to `google_playstore_analysis.twb` (or `.twbx` — see below) to make the project self-describing in a GitHub file listing.
+- **Upgrade `.twb` to `.twbx` (packaged workbook):** A `.twb` file contains only the workbook definition — it does not bundle the data source. Anyone cloning the repo must manually reconnect `googleplaystore.xlsx`. A `.twbx` (packaged workbook) embeds the data extract directly, making the dashboard immediately openable without any reconnection step. Export via Tableau Desktop: *File → Export Packaged Workbook*.
+- **Add a `.gitignore`:** Exclude Tableau temporary files and OS artefacts:
+
+  ```
+  *.twb~
+  *.twbx~
+  .DS_Store
+  Thumbs.db
+  ```
+
+- **Do not commit `googleplaystore.xlsx` if file size is a concern:** The dataset is ~6 MB. If you include it, that's acceptable — but add a `data/README.md` noting its Kaggle source so users know where to re-download it if needed.
+
+### 2. Repository Structure
+
+Reorganise the repo for clarity and professionalism:
+
+```
+📁 Google-PlayStore-Dashboard/
+├── google_playstore_analysis.twbx       # Packaged Tableau workbook (data embedded)
+├── data/
+│   └── README.md                        # Kaggle download link + dataset description
+├── outputs/
+│   ├── google_playstore_dashboard.pdf   # Renamed from Untitled_Report.pdf
+│   └── screenshots/
+│       ├── page1_summary.png            # PNG export of Page 1
+│       └── page2_engagement.png         # PNG export of Page 2
+└── README.md
+```
+
+### 3. Dashboard & Visual Quality
+
+- **Embed dashboard screenshots in the README:** Tableau `.twbx` files and PDFs cannot be previewed on GitHub. Adding PNG screenshots of both dashboard pages is the single most impactful step for a Tableau portfolio project — visitors immediately see the work without downloading anything:
+
+  ```markdown
+  ## Dashboard Preview
+  ### Page 1 — Summary Metrics & Audience Breakdown
+  ![Page 1](outputs/screenshots/page1_summary.png)
+
+  ### Page 2 — Engagement & Distribution Analysis
+  ![Page 2](outputs/screenshots/page2_engagement.png)
+  ```
+
+- **Investigate the KPI discrepancy:** Page 1 shows **152 apps** in the KPI card, but the dataset contains 9,660+ apps. This suggests an active filter is narrowing the view significantly. Document what filter is applied (e.g. a specific category or size bracket) in the README and in a visible text annotation on the dashboard itself — otherwise viewers will be confused by the mismatch.
+- **Replace the parallel coordinates chart if targeting non-technical audiences:** Parallel coordinates plots are powerful but require explanation. Add a brief caption or tooltip instruction on the dashboard, or consider a grouped bar chart alternative for the top-apps-by-category comparison to make it more immediately readable.
+- **Add a dashboard title and subtitle to each page:** Currently the pages are described only in this README. Adding a title (e.g. "Google Play Store — Market Overview") and a one-line subtitle directly on each Tableau page makes the dashboard self-describing when shared as a PDF or screenshot.
+- **Clarify the `Top Apps by Installs` list:** The five apps shown (English Grammar Test, Ruler, Period Tracker, Calculator, Call Blocker) are likely filtered to a specific segment — these are not the actual top apps by installs globally on the Play Store (which would be Google Maps, YouTube, etc.). Document the active filter context that produces this list.
+
+### 4. Data Quality & Preparation
+
+- **Note the dataset's known anomalies:** The Google Play Store Kaggle dataset has documented quality issues that affect dashboard outputs:
+  - A row where `Category = '1.9'` (a CSV row-misalignment) — verify it is excluded from all visuals.
+  - `Rating` values above 5.0 exist in some versions — confirm they are filtered out before computing the 4.19 average.
+  - `"Varies with device"` entries in the `Size` column should be excluded from the Size vs. Installs scatter to avoid distorted results.
+- **Validate the 4 billion total reviews figure:** A sum of `Reviews` across all apps yielding 4,044,332,969 may reflect duplicate records or apps with artificially inflated review counts. Cross-check against the raw CSV before publishing this as a headline KPI.
+- **Document the `Installs` column's bracket format:** Raw values like `"10,000+"` are text strings, not numbers. Note in the README how Tableau handles this column (likely as a dimension, not a measure) and whether any calculated field was created to enable numeric sorting or aggregation.
+- **Add a data preparation notes section:** Even a brief paragraph describing any cleaning steps performed (deduplication, null removal, type casting) adds credibility and helps users reproduce your results.
+
+### 5. Ethics, Attribution & Licensing
+
+- **Add a formal dataset citation:**
+  > Lavanya M. (2019). *Google Play Store Apps.* Kaggle. https://www.kaggle.com/datasets/lava18/google-play-store-apps
+- **Add a dataset age warning:** The Kaggle snapshot was scraped in 2018–2019. App counts, category rankings, install figures, and market share have shifted substantially since then. Add a visible note in the README — and ideally a small text annotation on the dashboard itself — that figures reflect a historical snapshot.
+- **Add a `LICENSE` file:** Use **MIT License** for the Tableau workbook and README. Clarify that the license applies to your analytical work only, not to the underlying Google Play Store data.
+- **Strengthen the disclaimer:** The current disclaimer is at the bottom of the README. Consider also adding a brief note directly on the Tableau dashboard (e.g. in the footer of each page) so the caveat travels with the PDF export and any screenshots shared independently.
+
+### 6. Analysis Quality Improvements
+
+- **Quantify the install-review gap finding:** The Key Insights section notes that "a small number of breakout apps accumulate disproportionately large review volumes." Strengthen this with a specific figure — e.g. "the top 1% of apps by review count account for X% of all reviews." This turns a qualitative observation into a concrete, citable insight.
+- **Add a time-based analysis using `Last Updated`:** The dataset includes `Last Updated` dates. A line chart of app update frequency by year or a bar chart of apps by last-update recency would add a temporal dimension currently absent from both dashboard pages.
+- **Add a Paid app deep-dive:** The 7.4% Paid app segment is noted but not explored. A dedicated filter or page section comparing Paid app ratings, review counts, and install volumes by category would give the monetization story much more depth.
+- **Consider adding a category-level average rating heatmap:** A heatmap or colour-coded table showing average rating per category is a standard and highly readable addition to any Play Store dashboard — and it directly addresses Business Objective #1 (rating benchmarking by category).
+
+---
 
 ## Author
 
