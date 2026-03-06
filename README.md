@@ -105,25 +105,6 @@ A horizontal bar chart displaying the **average user rating per app category**, 
 
 ---
 
-## How to Open & Use
-
-1. **Clone the Repository:**
-
-```bash
-git clone https://github.com/your-username/Google-PlayStore-Tableau-Analysis.git
-```
-
-2. **Open the Workbook:**
-   - Launch **Tableau Desktop** (version 2025.3 or compatible)
-   - Open `Book1.twb`
-   - If prompted, reconnect the data source to `googleplaystore.xlsx` on your local machine
-
-3. **Explore the Dashboard:**
-   - Navigate between **Sheet 1** (Heatmap) and **Sheet 2** (Avg Rating by Category)
-   - Use Tableau's built-in filters and tooltips to drill down into specific categories, content ratings, or app types
-
----
-
 ## Data Source
 
 The **Google Play Store** dataset is a publicly available dataset commonly sourced from [Kaggle](https://www.kaggle.com/datasets/lava18/google-play-store-apps). It represents a snapshot of app metadata scraped from the Play Store and is intended for educational and analytical purposes only.
