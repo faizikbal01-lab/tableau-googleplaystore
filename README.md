@@ -1,7 +1,4 @@
 # Google Play Store App Analysis — Tableau Dashboard
-
-# 📱 Google Play Store — Tableau Market Analysis
-
 A Tableau dashboard built on 10,841 Google Play Store app records, analyzing market trends across ratings, installs, pricing, categories, and content ratings — designed to help developers and product teams identify where the market opportunities are.
 
 ---
